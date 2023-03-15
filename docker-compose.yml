@@ -29,6 +29,7 @@ services:
       - fullnet
     depends_on:
       - db
+    command: bash -c 'while !</dev/tcp/db/3306; do sleep 1; done; npm run dev'
   
   # nginx:
 
