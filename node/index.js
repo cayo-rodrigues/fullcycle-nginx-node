@@ -19,22 +19,22 @@ const getRandomName = () => {
 }
 
 app.get("/", async (req, res) => {
-  let html = "<h1>Full Cycle Rocks!</h1>"
-  
   const connection = await createConnection()
   
   await connection.execute("INSERT INTO people (name) VALUES (?)", [getRandomName()])
   await connection.commit()
 
-  const [people] = await connection.execute("SELECT * FROM people")
+  const [people] = await connection.execute("SELECT name FROM people")
   await connection.end()
-  
-  let names = ""
-  for (let person of people) {
-    names += `<li>${person.name}</li>`
-  }
-  
-  html += `<ul>${names}</ul>`
+
+  const html = `
+    <h1>Full Cycle Rocks!</h1>
+    <ul>
+      ${people.reduce((allNames, {name}) => (
+        allNames + `<li>${name}</li>`
+      ), "")}
+    </ul>
+  `
 
   return res.send(html)
 })
