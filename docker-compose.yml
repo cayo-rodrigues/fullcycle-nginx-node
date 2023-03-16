@@ -9,8 +9,6 @@ services:
       - MYSQL_ROOT_USER=root
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=fulldb
-    ports:
-      - 3306:3306
     networks:
       - fullnet
     volumes:
@@ -23,15 +21,25 @@ services:
     tty: true
     volumes:
       - ./node:/app
-    ports:
-      - 8080:8080
     networks:
       - fullnet
     depends_on:
       - db
     command: bash -c 'while !</dev/tcp/db/3306; do sleep 1; done; npm run dev'
   
-  # nginx:
+  nginx:
+    container_name: fullcycle_nginx
+    image: nginx:latest
+    tty: true
+    ports:
+      - 8080:8080
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - fullnet
+    depends_on:
+      - api
+
 
 networks:
   fullnet:
