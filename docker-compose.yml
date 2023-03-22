@@ -21,6 +21,7 @@ services:
     tty: true
     volumes:
       - ./node:/app
+      - /app/node_modules
     networks:
       - fullnet
     depends_on:
@@ -40,7 +41,7 @@ services:
       - fullnet
     depends_on:
       - api
-    command: wait-for-it api:3000 -t 30 -- nginx -g "daemon off;"
+    command: bash -c "wait-for-it api:3000 -t 30 -- echo 'Nginx running on http://localhost:8080'; nginx -g 'daemon off;'"
 
 
 networks:

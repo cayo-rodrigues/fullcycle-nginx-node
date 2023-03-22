@@ -39,4 +39,4 @@ app.get("/", async (req, res) => {
   return res.send(html)
 })
 
-app.listen(PORT, () => console.log(`\nRunning at http://localhost:${PORT}\n`))
+app.listen(PORT, () => console.log(`\nApi running on port ${PORT}\n`))
