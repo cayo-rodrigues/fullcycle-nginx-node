@@ -25,11 +25,12 @@ services:
       - fullnet
     depends_on:
       - db
-    command: bash -c 'while !</dev/tcp/db/3306; do sleep 1; done; npm run dev'
-  
+    command: wait-for-it db:3306 -t 30 -- npm run dev
+
   nginx:
     container_name: fullcycle_nginx
-    image: nginx:latest
+    build:
+      context: ./nginx
     tty: true
     ports:
       - 8080:8080
@@ -39,6 +40,7 @@ services:
       - fullnet
     depends_on:
       - api
+    command: wait-for-it api:3000 -t 30 -- nginx -g "daemon off;"
 
 
 networks:

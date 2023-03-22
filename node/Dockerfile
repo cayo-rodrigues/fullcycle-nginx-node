@@ -1,6 +1,7 @@
 FROM node:16
 
-RUN apt update
+RUN apt-get update && \
+    apt-get install -y wait-for-it
 
 WORKDIR /app
 
@@ -8,7 +9,7 @@ COPY . .
 
 RUN npm ci
 
-ENV PORT=3000
+ENV API_PORT=3000
 
 EXPOSE 3000
 
